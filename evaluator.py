@@ -28,7 +28,9 @@ SCORE_COL = 1
 # #nomalかanomalyかの情報が入ったCSVの読取用
 eval_data_list_path = "./eval_data_list.csv"
 # #anomaly　score　csvの読取用
-result_dir = "./result"
+result_dir = "./teams/"
+# anomaly score csvを格納しているフォルダ群のルートディレクトリ
+teams_root_dir = "./teams/"
 # #AUC,pAUCを出力するファイル名
 result_name = "result.csv"
 # #出力先path
@@ -43,31 +45,23 @@ def save_csv(save_file_path,
         writer = csv.writer(f, lineterminator='\n')
         writer.writerows(save_data)
 
+# result出力関数
+def output_result(team_dir, machine_types):
 
-###################################################
-# main
-if __name__ == "__main__":
-    # eval_data_listの読込
-    if os.path.exists(eval_data_list_path):
-        with open(eval_data_list_path) as fp:
-            eval_data_list = list(csv.reader(fp))
-    else:
-        print("Err:eval_data_list.csv not found")
-        sys.exit(1)
+    # team_dirのフォルダ名を取得
+    dir_name = os.path.basename(team_dir)
 
-    # 機種名リストを宣言
-    machine_types = []
-    # 機種名リストにeval_data_listから機種名を格納
-    for idx in eval_data_list:
-        if len(idx) < CHK_MACHINE_TYPE_LINE:
-            machine_types.append(idx[MACHINE_TYPE_COL])
+    # #AUC,pAUCを出力するファイル名
+    result_name = "result_" + dir_name + ".csv"
+    # #出力先path
+    result_file = "{result_dir}/{result_name}".format(result_dir=result_dir, result_name=result_name)
 
     # CSV出力用リストを宣言
     csv_lines = []
     # 機種ごとにAUC、pAUCの算出を行う
     for machine_type in machine_types:
         # 機種名を使ってanomaly_scoreファイル名を取得
-        anomaly_score_path_list = sorted(glob.glob("{dir}/anomaly_score_{machine_type}_id*".format(dir=result_dir,
+        anomaly_score_path_list = sorted(glob.glob("{dir}/anomaly_score_{machine_type}_id*".format(dir=team_dir,
                                                                                                    machine_type=machine_type)))
         # CSV出力用リストへ機種名とタグを追加
         csv_lines.append([machine_type])
@@ -118,6 +112,41 @@ if __name__ == "__main__":
         print("pAUC Average :", averaged_performance[1])
         csv_lines.append(["Average"] + list(averaged_performance))
         csv_lines.append([])
+
     print("=============================================")
     print("AUC and pAUC results -> {}".format(result_file))
     save_csv(save_file_path=result_file, save_data=csv_lines)
+
+
+###################################################
+# main
+if __name__ == "__main__":
+
+    # teamsディレクトリ内にある複数のチームに対して処理を行う
+    teams_dirs = glob.glob("{root_dir}/*".format(root_dir=teams_root_dir))
+
+    # eval_data_listの読込
+    if os.path.exists(eval_data_list_path):
+        with open(eval_data_list_path) as fp:
+            eval_data_list = list(csv.reader(fp))
+    else:
+        print("Err:eval_data_list.csv not found")
+        sys.exit(1)
+
+    # 機種名リストを宣言
+    machine_types = []
+    # 機種名リストにeval_data_listから機種名を格納
+    for idx in eval_data_list:
+        if len(idx) < CHK_MACHINE_TYPE_LINE:
+            machine_types.append(idx[MACHINE_TYPE_COL])
+
+    # 複数ディレクトリか単体ディレクトリの指定か判定
+    if os.path.isdir(teams_dirs[0]):
+
+        # team単位で処理を行う
+        for team_dir in teams_dirs:
+            output_result(team_dir, machine_types)
+    else:
+
+        # 指定ディレクトリに対して処理を行う
+        output_result(teams_dirs, machine_types)
