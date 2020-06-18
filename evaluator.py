@@ -7,6 +7,7 @@ import glob
 import re
 import numpy
 from sklearn import metrics
+from operator import itemgetter
 
 ###################################################
 # 定数を宣言
@@ -78,6 +79,10 @@ def output_result(team_dir, machine_types):
             # 各anomaly_scoreファイルの中身をリストへ格納
             with open(anomaly_score_path) as fp:
                 anomaly_score_list = list(csv.reader(fp))
+
+                # ファイル名を昇順でソート
+                anomaly_score_list_sort = sorted(anomaly_score_list, key=itemgetter(0))
+
             # idの抽出
             machine_id = re.findall('id_[0-9][0-9]', anomaly_score_path)[EXTRACTION_ID_COL]
             print(machine_id)
@@ -93,7 +98,7 @@ def output_result(team_dir, machine_types):
                     if flag and machine_id in str(eval_data[FILENAME_COL]):
                         y_true.append(float(eval_data[Y_TRUE_COL]))
             # anomaly_scoreを実数に変換して抽出
-            y_pred = [float(anomaly_score[SCORE_COL]) for anomaly_score in anomaly_score_list]
+            y_pred = [float(anomaly_score[SCORE_COL]) for anomaly_score in anomaly_score_list_sort]
             # ここで数が一致していない場合エラー
             if len(y_true) != len(y_pred):
                 print("Err:anomaly_score may be missing")
