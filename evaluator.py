@@ -1,18 +1,29 @@
-##################################################
-# python library
+########################################################################
+# import default python-library
+########################################################################
 import os
 import sys
 import csv
 import glob
 import re
+from operator import itemgetter
+########################################################################
+
+
+########################################################################
+# import additional python-library
+########################################################################
 import numpy
 from sklearn import metrics
-from operator import itemgetter
+########################################################################
 
-###################################################
-# 定数を宣言
+
+########################################################################
+# constant value
+########################################################################
 # #pAUCの計算用
 MAX_FPR = 0.1
+
 # #eval_data_listから機種名の行を調べるため用
 CHK_MACHINE_TYPE_LINE = 2
 
@@ -21,32 +32,37 @@ CHK_MACHINE_TYPE_LINE = 2
 FILENAME_COL = 0
 MACHINE_TYPE_COL = 0
 Y_TRUE_COL = 2
+
 # #anomaly_score_csvのカラムナンバー
 EXTRACTION_ID_COL = 0
 SCORE_COL = 1
 
 # 読み込みと出力の設定
 # #nomalかanomalyかの情報が入ったCSVの読取用
-eval_data_list_path = "./eval_data_list.csv"
+EVAL_DATA_LIST_PATH = "./eval_data_list.csv"
+
 # #anomaly　score　csvの読取用
-result_dir = "./teams/"
+RESULT_DIR = "./teams/"
+
 # anomaly score csvを格納しているフォルダ群のルートディレクトリ
-teams_root_dir = "./teams/"
-# #AUC,pAUCを出力するファイル名
-result_name = "result.csv"
-# #出力先path
-result_file = "{result_dir}/{result_name}".format(result_dir=result_dir, result_name=result_name)
+TEAMS_ROOT_DIR = "./teams/"
+########################################################################
 
 
-###################################################
-# CSV保存
+########################################################################
+# data save in CSV file
+########################################################################
 def save_csv(save_file_path,
              save_data):
     with open(save_file_path, "w", newline="") as f:
         writer = csv.writer(f, lineterminator='\n')
         writer.writerows(save_data)
+########################################################################
 
-# result出力関数
+
+########################################################################
+# result data output
+########################################################################
 def output_result(team_dir, machine_types):
 
     # team_dirのフォルダ名を取得
@@ -54,16 +70,20 @@ def output_result(team_dir, machine_types):
 
     # #AUC,pAUCを出力するファイル名
     result_name = "result_" + dir_name + ".csv"
+
     # #出力先path
-    result_file = "{result_dir}/{result_name}".format(result_dir=result_dir, result_name=result_name)
+    result_file = "{result_dir}/{result_name}".format(result_dir=RESULT_DIR, result_name=result_name)
 
     # CSV出力用リストを宣言
     csv_lines = []
+
     # 機種ごとにAUC、pAUCの算出を行う
     for machine_type in machine_types:
+
         # 機種名を使ってanomaly_scoreファイル名を取得
-        anomaly_score_path_list = sorted(glob.glob("{dir}/anomaly_score_{machine_type}_id*".format(dir=team_dir,
-                                                                                                   machine_type=machine_type)))
+        anomaly_score_path_list = sorted(
+            glob.glob("{dir}/anomaly_score_{machine_type}_id*".format(dir=team_dir, machine_type=machine_type)))
+
         # CSV出力用リストへ機種名とタグを追加
         csv_lines.append([machine_type])
         csv_lines.append(["id", "AUC", "pAUC"])
@@ -76,6 +96,7 @@ def output_result(team_dir, machine_types):
 
         # idごとのAUC,pAUCの算出
         for anomaly_score_path in anomaly_score_path_list:
+
             # 各anomaly_scoreファイルの中身をリストへ格納
             with open(anomaly_score_path) as fp:
                 anomaly_score_list = list(csv.reader(fp))
@@ -97,8 +118,10 @@ def output_result(team_dir, machine_types):
                 else:
                     if flag and machine_id in str(eval_data[FILENAME_COL]):
                         y_true.append(float(eval_data[Y_TRUE_COL]))
+
             # anomaly_scoreを実数に変換して抽出
             y_pred = [float(anomaly_score[SCORE_COL]) for anomaly_score in anomaly_score_list_sort]
+
             # ここで数が一致していない場合エラー
             if len(y_true) != len(y_pred):
                 print("Err:anomaly_score may be missing")
@@ -111,6 +134,7 @@ def output_result(team_dir, machine_types):
             performance.append([auc, p_auc])
             print("AUC :", auc)
             print("pAUC :", p_auc)
+
         # 平均算出し出力用リストへ格納
         averaged_performance = numpy.mean(numpy.array(performance, dtype=float), axis=0)
         print("\nAUC Average :", averaged_performance[0])
@@ -121,18 +145,20 @@ def output_result(team_dir, machine_types):
     print("=============================================")
     print("AUC and pAUC results -> {}".format(result_file))
     save_csv(save_file_path=result_file, save_data=csv_lines)
+########################################################################
 
 
-###################################################
-# main
+########################################################################
+# main evaluator.py
+########################################################################
 if __name__ == "__main__":
 
     # teamsディレクトリ内にある複数のチームに対して処理を行う
-    teams_dirs = glob.glob("{root_dir}/*".format(root_dir=teams_root_dir))
+    teams_dirs = glob.glob("{root_dir}/*".format(root_dir=TEAMS_ROOT_DIR))
 
     # eval_data_listの読込
-    if os.path.exists(eval_data_list_path):
-        with open(eval_data_list_path) as fp:
+    if os.path.exists(EVAL_DATA_LIST_PATH):
+        with open(EVAL_DATA_LIST_PATH) as fp:
             eval_data_list = list(csv.reader(fp))
     else:
         print("Err:eval_data_list.csv not found")
@@ -140,18 +166,16 @@ if __name__ == "__main__":
 
     # 機種名リストを宣言
     machine_types = []
+
     # 機種名リストにeval_data_listから機種名を格納
     for idx in eval_data_list:
         if len(idx) < CHK_MACHINE_TYPE_LINE:
             machine_types.append(idx[MACHINE_TYPE_COL])
 
-    # 複数ディレクトリか単体ディレクトリの指定か判定
-    if os.path.isdir(teams_dirs[0]):
-
-        # team単位で処理を行う
-        for team_dir in teams_dirs:
+    # team単位で処理を行う
+    for team_dir in teams_dirs:
+        if os.path.isdir(team_dir):
             output_result(team_dir, machine_types)
-    else:
+        else:
+            print("{} is not directory.".format(team_dir))
 
-        # 指定ディレクトリに対して処理を行う
-        output_result(teams_dirs, machine_types)
