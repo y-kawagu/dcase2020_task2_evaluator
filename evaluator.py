@@ -41,10 +41,10 @@ SCORE_COL = 1
 # #nomalかanomalyかの情報が入ったCSVの読取用
 EVAL_DATA_LIST_PATH = "./eval_data_list.csv"
 
-# #anomaly　score　csvの読取用
+# #result_<team_name>.csvの出力ディレクトリ
 RESULT_DIR = "./teams/"
 
-# anomaly score csvを格納しているフォルダ群のルートディレクトリ
+# #anomaly score csvを格納しているフォルダ群のルートディレクトリ
 TEAMS_ROOT_DIR = "./teams/"
 ########################################################################
 

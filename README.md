@@ -21,20 +21,19 @@ resultディレクトリをチーム名に改名し指定するディレクト�
 
 
 ### 3. ディレクトリ構成
-
 - ./dcase2020_task2_evaluator
     - __/teams__ <<evaluatorが参照するディレクトリ
-        - /{team_name}
+        - /{team_name_1}
             - anomaly_score_(machine_type)_id_NN.csv
             - anomaly_score_(machine_type)_id_NN.csv
             - ...
-        - /{team_name}
+        - /{team_name_2}
             - anomaly_score_(machine_type)_id_NN.csv
             - anomaly_score_(machine_type)_id_NN.csv
             - ...
         - ...
-        - *result_{team_name}.csv*
-        - *result_{team_name}.csv*
+        - *result_{team_name_1}.csv*
+        - *result_{team_name_2}.csv*
     - /README.md
     - __/evaluator.py__ <<evaluator本体
     - __/eval_data_list.csv__　<<evaluatorが参照するファイル
@@ -111,7 +110,7 @@ Average,0.8737417840375586,0.6977267111440573
 ```
 
 ## Dependency
-In addition, we checked performing on **Windows 10**.
+In addition, we checked performing on **Windows 10 Pro 1903**.
 
 ### Software packages
 - Python == 3.6.5
