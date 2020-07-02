@@ -1,15 +1,15 @@
 # dcase2020_task2_evaluator
-このスクリプトはdcase2020_task2で出力したeval_dataのanomaly_scoreの
-AUC,pAUCリザルトを出力することを目的としています。  
+このスクリプトはdcase2020_task2で出力したeval dataのanomaly scoreの
+各マシンごとのAUC,pAUCを出力することを目的としています。  
 
 ## Description
 AUC、pAUC算出スクリプトは以下のスクリプトで構成されています。
 - `evaluator.py`
-    - このスクリプトはanomaly_scoreが格納されたディレクトリと真値のcsvを使用して、AUC、pAUCを出力します。 **teams/<team_name>**
+    - このスクリプトは anomaly score が格納されたディレクトリと真値のcsvを使用して、AUC、pAUCを出力します。 **teams/<team_name>**
     - AUC、pAUCのcsvファイルは指定したディレクトリに保存されます。 **result_<team_name>.csv**
 
 ## usage
-### 1. Clone repository
+### 1. リポジトリのクローン
 Githubからこのリポジトリをクローンします。
 
 ### 2. 必要なデータの用意
@@ -40,10 +40,11 @@ resultディレクトリをチーム名に改名し指定するディレクト�
     - __/eval_data_list.csv__　<<evaluatorが参照するファイル
   
 上記の構成で動作します。
-斜字のデータは evaluator.py を実行した後に生成されます。
 
-### 4. parameterの変更
-parameterはevaluator.pyの以下の定数から変えることができます。
+斜字のデータは`evaluator.py`を実行した後に生成されます。
+
+### 4. パラメーターの変更
+パラメーターは`evaluator.py`の以下の定数から変えることができます。
 - MAX_FPR
     - FPR(偽陽性率)の閾値 : default 0.1
 - EVAL_DATA_LIST_PATH
@@ -53,15 +54,15 @@ parameterはevaluator.pyの以下の定数から変えることができます�
 - TEAMS_ROOT_DIR
     - anomaly score csvを保存しているフォルダ群のPath : "./teams/"
 
-### 5. 実行
+### 5. 実行方法
 AUC、pAUC算出スクリプト　`evaluator.py`　を実行します
 ```
-python evaluator.py
+$ python evaluator.py
 ```
-`evaluator.py` は各システムの machine type ごとに AUC と pAUC を算出し、結果をディレクトリ **RESULT_DIR** に保存します。
+`evaluator.py` は各システムの各マシンごとAUCとpAUCを算出し、結果をディレクトリ **RESULT_DIR** に保存します。
 
-### 6. Check results
-出力した結果は machine type ごとに区切られており、各idに対応した
+### 6. 結果の確認
+出力した結果は各マシンごとに区切られており、idに対応した
 AUC、pAUC の結果を確認できます。
 
 `result_<team_name>.csv`
