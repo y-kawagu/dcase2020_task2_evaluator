@@ -1,5 +1,5 @@
 # dcase2020_task2_evaluator
-The **dcase2020_task2_evaluator** is a script for calculating the AUC and pAUC scores from the anomaly score list for the evaluation dataset in DCASE 2020 Challenge Task 2 "Unsupervised Detection of Anomalous Sounds for Machine Condition Monitoring".
+The **dcase2020_task2_evaluator** is a script for calculating the AUC and pAUC scores from the anomaly score list for the [evaluation dataset](https://zenodo.org/record/3841772) in DCASE 2020 Challenge Task 2 "Unsupervised Detection of Anomalous Sounds for Machine Condition Monitoring".
 
 http://dcase.community/challenge2020/task-unsupervised-detection-of-anomalous-sounds
 
@@ -19,7 +19,7 @@ Clone this repository from Github.
 - Ground truth
     - Download the ground truth `eval_data_list.csv` from zenodo and put it at the top directory
 - Anomaly scores
-    - Generate csv files `anomaly_score_<Machine_Type>\_id_<Machine_ID>.csv` by using a system. (The format information is described [here](http://dcase.community/challenge2020/task-unsupervised-detection-of-anomalous-sounds#submission).) 
+    - Generate csv files `anomaly_score_<Machine_Type>\_id_<Machine_ID>.csv` by using a system for the [evaluation dataset](https://zenodo.org/record/3841772). (The format information is described [here](http://dcase.community/challenge2020/task-unsupervised-detection-of-anomalous-sounds#submission).) 
     - Rename the directory containing the csv files to a team name
     - Move the directory into **./teams/**
 
