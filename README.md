@@ -17,7 +17,7 @@ Clone this repository from Github.
 
 ### 2. Prepare data
 - Ground truth
-    - Download `eval_data_list.csv` and put it at the top directory
+    - Download the ground truth `eval_data_list.csv` from zenodo and put it at the top directory
 - Anomaly scores
     - Generate csv files `anomaly_score_<Machine_Type>\_id_<Machine_ID>.csv` by using a system. (The format information is described [here](http://dcase.community/challenge2020/task-unsupervised-detection-of-anomalous-sounds#submission).) 
     - Rename the directory containing the csv files to a team name
