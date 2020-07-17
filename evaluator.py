@@ -21,9 +21,6 @@ from sklearn import metrics
 ########################################################################
 # constant value
 ########################################################################
-# #pAUCの計算用
-MAX_FPR = 0.1
-
 # #eval_data_listから機種名の行を調べるため用
 CHK_MACHINE_TYPE_LINE = 2
 
@@ -37,15 +34,19 @@ Y_TRUE_COL = 2
 EXTRACTION_ID_COL = 0
 SCORE_COL = 1
 
+# #pAUCの計算用
+MAX_FPR = 0.1
+
 # 読み込みと出力の設定
 # #nomalかanomalyかの情報が入ったCSVの読取用
 EVAL_DATA_LIST_PATH = "./eval_data_list.csv"
 
+# #anomaly score csvを格納しているフォルダ群のルートディレクトリ
+TEAMS_ROOT_DIR = "./teams/"
+
 # #result_<team_name>.csvの出力ディレクトリ
 RESULT_DIR = "./teams/"
 
-# #anomaly score csvを格納しているフォルダ群のルートディレクトリ
-TEAMS_ROOT_DIR = "./teams/"
 ########################################################################
 
 
