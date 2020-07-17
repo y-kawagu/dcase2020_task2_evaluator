@@ -7,7 +7,7 @@ http://dcase.community/challenge2020/task-unsupervised-detection-of-anomalous-so
 
 The **dcase2020_task2_evaluator** consists of only one script:
 - `evaluator.py`
-    - This script outputs the AUC and pAUC scores using: 
+    - This script outputs the AUC and pAUC scores by using: 
       - Ground truth of the normal and anomaly labels
       - Anomaly scores for each wave file listed in the csv file for each macine ID
 
