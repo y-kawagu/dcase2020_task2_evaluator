@@ -48,7 +48,7 @@ If you use this script to evaluate the output of a single system, one team is en
 ### 4. Change parameters
 The parameters are defined in the script `evaluator.py` as follows.
 - MAX_FPR
-    - The FPR threshold for pAUC: default 0.1
+    - The FPR threshold for pAUC : default 0.1
 - EVAL_DATA_LIST_PATH
     - The path of the ground truth : default "./eval_data_list.csv"
 - TEAMS_ROOT_DIR
