@@ -113,7 +113,7 @@ Average,0.8737417840375586,0.6977267111440573
 ```
 
 ## Dependency
-This script has been verified to work on **Windows 10 Pro 1903**.
+This script has been verified to work on **Windows 10 Pro 1903** and **Cent OS 7**.
 
 ### Software packages
 - Python == 3.6.5
